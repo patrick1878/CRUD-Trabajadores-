@@ -1,35 +1,57 @@
-body {
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
-    text-align: center;
+let estudiantes = [];
+
+function agregar() {
+    let nombre = document.getElementById("nombre").value;
+    let edad = document.getElementById("edad").value;
+    let nota = document.getElementById("nota").value;
+
+    if (nombre === "" || edad === "" || nota === "") {
+        alert("Completa todos los campos");
+        return;
+    }
+
+    estudiantes.push({ nombre, edad, nota });
+
+    mostrar();
+
+    document.getElementById("nombre").value = "";
+    document.getElementById("edad").value = "";
+    document.getElementById("nota").value = "";
 }
 
-.container {
-    width: 70%;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    margin-top: 30px;
-    border-radius: 10px;
+function mostrar() {
+    let tabla = document.getElementById("tablaEstudiantes");
+    tabla.innerHTML = "";
+
+    estudiantes.forEach((e, index) => {
+        tabla.innerHTML += `
+        <tr>
+            <td>${e.nombre}</td>
+            <td>${e.edad}</td>
+            <td>${e.nota}</td>
+            <td>
+                <button onclick="editar(${index})">Editar</button>
+                <button onclick="eliminar(${index})">Eliminar</button>
+            </td>
+        </tr>`;
+    });
 }
 
-input {
-    padding: 10px;
-    margin: 5px;
+function editar(index) {
+    let nuevoNombre = prompt("Nuevo nombre:", estudiantes[index].nombre);
+    let nuevaEdad = prompt("Nueva edad:", estudiantes[index].edad);
+    let nuevaNota = prompt("Nueva nota:", estudiantes[index].nota);
+
+    estudiantes[index] = {
+        nombre: nuevoNombre,
+        edad: nuevaEdad,
+        nota: nuevaNota
+    };
+
+    mostrar();
 }
 
-button {
-    padding: 10px 15px;
-    cursor: pointer;
-}
-
-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid gray;
-    padding: 10px;
+function eliminar(index) {
+    estudiantes.splice(index, 1);
+    mostrar();
 }
